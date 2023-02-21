@@ -48,4 +48,12 @@ public final class ErisLabel {
         this(name, permission, DEFAULT_DESCRIPTION, new ArrayList<>());
     }
 
+    public void addAlias(String alias) {
+        aliases.add(alias);
+    }
+
+    public void addAliases(String... aliases) {
+        this.aliases.addAll(Arrays.asList(aliases));
+    }
+
 }
