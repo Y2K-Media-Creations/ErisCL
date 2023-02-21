@@ -1,0 +1,61 @@
+plugins {
+    id 'java'
+    id "com.github.johnrengelman.shadow" version "7.1.2"
+    id 'maven-publish'
+    id "io.freefair.lombok" version "6.6.1"
+}
+
+group = 'sh.miles.eriscl'
+version = '1.0-SNAPSHOT'
+
+sourceCompatibility = JavaVersion.VERSION_17
+compileJava.options.encoding = "UTF-8"
+compileTestJava.options.encoding = "UTF-8"
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven {
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+    maven {
+        url = 'https://repo.papermc.io/repository/maven-public/'
+    }
+}
+
+dependencies {
+    testCompileOnly 'org.junit.jupiter:junit-jupiter:5.8.1'
+    testCompileOnly 'org.junit.platform:junit-platform-launcher:1.9.2'
+    testCompileOnly 'org.junit.platform:junit-platform-suite-engine:1.9.1'
+    testCompileOnly 'com.github.seeseemelk:MockBukkit-v1.19:2.29.0'
+
+    compileOnly 'org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT'
+}
+
+shadowJar {
+    archiveClassifier.set("")
+}
+
+publishing {
+    publications {
+        shadow(MavenPublication) { publication ->
+            project.shadow.component(publication)
+
+            repositories {
+                maven {
+                    credentials {
+                        username = "$myRepoUser"
+                        password = "$myRepoPass"
+                    }
+                    url = "https://maven.miles.sh/snapshots"
+                }
+            }
+        }
+    }
+}
+
+
+
+test {
+    useJUnit()
+}
